@@ -1,5 +1,5 @@
 HOST=localhost
-PORT=8080
+PORT=3306
 DB_NAME=php-store
 CHARSET=utf8mb4
 USER=user
