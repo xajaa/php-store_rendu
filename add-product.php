@@ -1,6 +1,15 @@
 <?php
 require_once __DIR__ . '/classes/Categories.php';
 require_once __DIR__ . '/layout/header.php';
+require_once '/functions/uploadImage.php';
+
+
+$fileInputName = "fileInput"; 
+$targetDirectory = "uploads/"; 
+
+if(isset($_POST["submit"]) && !empty($_FILES[$fileInputName]["name"])) {
+    uploadImage($fileInputName, $targetDirectory);
+}
 ?>
 
 <main>
@@ -46,6 +55,10 @@ require_once __DIR__ . '/layout/header.php';
         </div>
         <div>
             <input type="submit" value="Enregistrer" />
+        </div>
+        <div>
+        <input type="file" name="fileInput" id="fileInput">
+        <input type="submit" name="submit" value="Upload Image">
         </div>
     </form>
 </main>

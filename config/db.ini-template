@@ -1,6 +1,6 @@
-HOST=127.0.0.1
-PORT=3306
-DB_NAME=db_name
+HOST=localhost
+PORT=8080
+DB_NAME=php-store
 CHARSET=utf8mb4
 USER=user
 PASSWORD=pass
