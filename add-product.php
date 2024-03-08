@@ -1,14 +1,26 @@
 <?php
 require_once __DIR__ . '/classes/Categories.php';
 require_once __DIR__ . '/layout/header.php';
-require_once '/functions/uploadImage.php';
-
+require_once __DIR__ . '/functions/uploadImage.php';
 
 $fileInputName = "fileInput"; 
 $targetDirectory = "uploads/"; 
 
+// Vérifier si le formulaire a été soumis et si un fichier a été téléchargé
 if(isset($_POST["submit"]) && !empty($_FILES[$fileInputName]["name"])) {
-    uploadImage($fileInputName, $targetDirectory);
+    // Appeler la fonction uploadImage et capturer la réponse
+    $productId = 1; // Remplacez ceci par l'ID du produit approprié
+    $uploadResult = uploadImage($fileInputName, $targetDirectory, $productId);
+
+    // Vérifier le résultat du téléchargement
+    if($uploadResult["success"]) {
+        // Le téléchargement a réussi, vous pouvez enregistrer le produit dans la base de données avec le chemin de l'image
+        $imageFilePath = $uploadResult["filePath"];
+        // Code pour enregistrer le produit dans la base de données avec $imageFilePath
+    } else {
+        // Le téléchargement a échoué, afficher le message d'erreur
+        echo "<p style='color: white; background-color: red;'>Erreur: " . $uploadResult["message"] . "</p>";
+    }
 }
 ?>
 
@@ -17,7 +29,7 @@ if(isset($_POST["submit"]) && !empty($_FILES[$fileInputName]["name"])) {
 
     <?php if (isset($_GET['error'])) { ?>
     <p style="color: white; background-color: red;">
-        <?php echo categoryErrorMessage(intval($_GET['error'])); ?>
+        Erreur: <?php echo intval($_GET['error']); ?>
     </p>
     <?php } ?>
 
@@ -26,7 +38,7 @@ if(isset($_POST["submit"]) && !empty($_FILES[$fileInputName]["name"])) {
     $categories = $categoriesDb->findAll();
     ?>
 
-    <form action="add-product-process.php" method="POST">
+    <form action="add-product-process.php" method="POST" enctype="multipart/form-data">
         <div>
             <label for="name">Nom :</label>
             <input type="text" name="name" id="name" />
@@ -36,8 +48,8 @@ if(isset($_POST["submit"]) && !empty($_FILES[$fileInputName]["name"])) {
             <input type="text" name="price" id="price" />
         </div>
         <div>
-            <label for="cover">Image :</label>
-            <input type="text" name="cover" id="cover" />
+            <label for="fileInput">Image :</label>
+            <input type="file" name="fileInput" id="fileInput" />
         </div>
         <div>
             <label for="description">Description :</label>
@@ -54,11 +66,7 @@ if(isset($_POST["submit"]) && !empty($_FILES[$fileInputName]["name"])) {
             </select>
         </div>
         <div>
-            <input type="submit" value="Enregistrer" />
-        </div>
-        <div>
-        <input type="file" name="fileInput" id="fileInput">
-        <input type="submit" name="submit" value="Upload Image">
+            <input type="submit" name="submit" value="Enregistrer" />
         </div>
     </form>
 </main>
