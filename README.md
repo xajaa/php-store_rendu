@@ -12,3 +12,10 @@ CHARSET=utf8mb4
 USER=user
 PASSWORD=pass
 ```
+
+
+```
+Partie authentification utilisateur: 
+
+Les classes et fonctions fournies sont essentielles pour gérer l'inscription et la connexion des utilisateurs. La classe User contient des méthodes pour ces opérations. La page register.php présente un formulaire d'inscription où les utilisateurs peuvent entrer leurs informations. Lors de la soumission du formulaire, les données sont validées et utilisées pour créer un nouvel utilisateur. En cas de succès, l'utilisateur est redirigé vers la page de connexion. De manière similaire, la page login.php affiche un formulaire de connexion et utilise la classe User pour vérifier les informations fournies. Si les informations sont correctes, l'utilisateur est connecté à l'application.
+```

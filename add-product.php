@@ -1,25 +1,34 @@
 <?php
 require_once __DIR__ . '/classes/Categories.php';
-require_once __DIR__ . '/layout/header.php';
-require_once __DIR__ . '/functions/uploadImage.php';
+require_once __DIR__ . '/classes/ImageUpload.php'; 
+require_once __DIR__ . '/classes/ProductService.php'; 
+require_once __DIR__ . '/classes/Database.php';
 
-$fileInputName = "fileInput"; 
-$targetDirectory = "uploads/"; 
+$fileInputName = "fileInput";
+$targetDirectory = "uploads/";
 
-// Vérifier si le formulaire a été soumis et si un fichier a été téléchargé
+
 if(isset($_POST["submit"]) && !empty($_FILES[$fileInputName]["name"])) {
-    // Appeler la fonction uploadImage et capturer la réponse
-    $productId = 1; // Remplacez ceci par l'ID du produit approprié
-    $uploadResult = uploadImage($fileInputName, $targetDirectory, $productId);
+   
+    $imageUploader = new ImageUpload($targetDirectory);
 
-    // Vérifier le résultat du téléchargement
-    if($uploadResult["success"]) {
-        // Le téléchargement a réussi, vous pouvez enregistrer le produit dans la base de données avec le chemin de l'image
-        $imageFilePath = $uploadResult["filePath"];
-        // Code pour enregistrer le produit dans la base de données avec $imageFilePath
+    $uploadResult = $imageUploader->ImageUpload($fileInputName);
+
+    if($uploadResult !== false) {
+        $imageFilePath = $uploadResult;
+        
+        $database = new Database();
+        $pdo = $database->getConnection();
+
+        $productService = new ProductService($pdo);
+
+        $productId = 1; 
+        $productService->associateImageWithProduct($productId, $imageFilePath);
+        
+        header("Location: add-product-success.php");
+        exit();
     } else {
-        // Le téléchargement a échoué, afficher le message d'erreur
-        echo "<p style='color: white; background-color: red;'>Erreur: " . $uploadResult["message"] . "</p>";
+        $errorMessage = "Erreur: Une erreur s'est produite lors du téléchargement de l'image.";
     }
 }
 ?>
@@ -27,9 +36,9 @@ if(isset($_POST["submit"]) && !empty($_FILES[$fileInputName]["name"])) {
 <main>
     <h1>Nouveau produit</h1>
 
-    <?php if (isset($_GET['error'])) { ?>
+    <?php if (isset($errorMessage)) { ?>
     <p style="color: white; background-color: red;">
-        Erreur: <?php echo intval($_GET['error']); ?>
+        <?php echo $errorMessage; ?>
     </p>
     <?php } ?>
 
