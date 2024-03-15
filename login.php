@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($loggedInUser) {
         $_SESSION['user_id'] = $loggedInUser['id'];
         $_SESSION['login'] = $loggedInUser['login'];
-        header('Location: add-category.php');
+        header('Location: index.php');
         exit;
     } else {
         echo "Identifiants incorrects.";

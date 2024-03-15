@@ -1,6 +1,10 @@
 <?php
 require_once __DIR__ . '/classes/Categories.php';
 require_once __DIR__ . '/layout/header.php';
+require_once __DIR__ . '/functions/checkLogin.php';
+
+checkLoggedIn();
+
 
 $id = intval($_GET['id']); // TODO: Vérifier que la clé 'id' existe
 

@@ -1,5 +1,6 @@
 <?php
-
+require_once __DIR__ . '/ImageUpload.php';
+require_once __DIR__ . '/ProductService.php';
 class Database
 {
     private function __construct() {}

@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/classes/User.php';
 
-// Vérifier si la méthode de requête est POST
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $login = $_POST['login'];
     $password = $_POST['password'];
@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($user->register($login, $password)) {
             // Rediriger vers la page précédente
             header('Location: ' . $_SERVER['HTTP_REFERER']);
-            exit(); // Assurez-vous d'arrêter l'exécution du script après la redirection
+            exit(); 
         } else {
             echo "Une erreur s'est produite lors de l'inscription.";
         }

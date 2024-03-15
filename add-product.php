@@ -1,30 +1,36 @@
 <?php
 require_once __DIR__ . '/classes/Categories.php';
-require_once __DIR__ . '/classes/ImageUpload.php'; 
-require_once __DIR__ . '/classes/ProductService.php'; 
+require_once __DIR__ . '/classes/ImageUpload.php';
+require_once __DIR__ . '/classes/ProductService.php';
 require_once __DIR__ . '/classes/Database.php';
+require_once __DIR__ . '/functions/checkLogin.php';
+
+checkLoggedIn();
 
 $fileInputName = "fileInput";
 $targetDirectory = "uploads/";
 
-
 if(isset($_POST["submit"]) && !empty($_FILES[$fileInputName]["name"])) {
-   
-    $imageUploader = new ImageUpload($targetDirectory);
+    $database = new Database();
+    $pdo = $database->getConnection();
 
-    $uploadResult = $imageUploader->ImageUpload($fileInputName);
+    // Créer une instance de la classe ImageUpload avec le répertoire cible des téléchargements et la connexion PDO
+    $imageUploader = new ImageUpload($targetDirectory, $pdo);
+
+    // Appeler la méthode uploadImage et capturer le résultat
+    $uploadResult = $imageUploader->uploadImage($fileInputName);
 
     if($uploadResult !== false) {
         $imageFilePath = $uploadResult;
-        
-        $database = new Database();
-        $pdo = $database->getConnection();
 
         $productService = new ProductService($pdo);
 
+        // Remplacez ceci par la logique appropriée pour récupérer l'ID du produit
         $productId = 1; 
+
+        // Appeler la méthode associateImageWithProduct de ProductService pour associer l'image au produit dans la base de données
         $productService->associateImageWithProduct($productId, $imageFilePath);
-        
+
         header("Location: add-product-success.php");
         exit();
     } else {

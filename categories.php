@@ -1,6 +1,9 @@
 <?php
 require_once __DIR__ . '/classes/Categories.php';
 require_once __DIR__ . '/layout/header.php';
+require_once __DIR__ . '/functions/checkLogin.php';
+checkLoggedIn();
+
 ?>
 
 <h1>Catégories</h1>

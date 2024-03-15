@@ -1,8 +1,10 @@
 <?php
-
 require_once __DIR__ . '/classes/Database.php';
 require_once __DIR__ . '/functions/utils.php';
 require_once __DIR__ . '/classes/CategoryError.php';
+require_once __DIR__ . '/functions/checkLogin.php';
+
+checkLoggedIn();
 
 if (!isset($_POST['name'])) {
     redirect('/');

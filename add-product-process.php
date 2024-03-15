@@ -3,6 +3,10 @@
 require_once __DIR__ . '/classes/Database.php';
 require_once __DIR__ . '/functions/utils.php';
 require_once __DIR__ . '/classes/ProductError.php';
+require_once __DIR__ . '/functions/checkLogin.php';
+
+checkLoggedIn();
+
 
 if (!isset($_POST['name']) || !isset($_POST['price']) || !isset($_POST['cover']) || !isset($_POST['description']) || !isset($_POST['category'])) {
     redirect('/');
